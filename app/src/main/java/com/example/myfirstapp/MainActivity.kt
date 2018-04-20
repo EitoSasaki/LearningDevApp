@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         //時間の設定
         var countTime: Long = 10000
         var interval: Long = 5000
-        var set: Long = 3
+        var set: Long = 2
 
         //Viewの設定
         val startButton = findViewById<Button>(R.id.startButton)
