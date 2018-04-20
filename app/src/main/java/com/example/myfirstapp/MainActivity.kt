@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         //時間の設定
         var countTime: Long = 10000
         var interval: Long = 5000
-        var set: Long = 2
+        var set: Int = 2
 
         //Viewの設定
         val startButton = findViewById<Button>(R.id.startButton)
@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         timerText = findViewById<TextView>(R.id.displayTime)
         timerText!!.setText(dateFormat.format(countTime))
         setCountText = findViewById<TextView>(R.id.countSet)
-        setCountText!!.setText(dateFormat.format(1))
+        setCountText!!.setText("SET: 1")
 
         //効果音の設定
         //var soundOne: Int
@@ -67,13 +67,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    internal inner class CountDown(countTime: Long, interval: Long, set: Long) : Runnable {
+    internal inner class CountDown(countTime: Long, interval: Long, set: Int) : Runnable {
         //変数の設定
         var timer: Long = 0 //カウントダウン用の時間をセット
         private val countTime: Long = countTime
         private val interval: Long = interval
-        private val set: Long = set //最大セット数
-        private var setCount: Long = 0 //セット数カウント用
+        private val set: Int = set //最大セット数
+        private var setCount: Int = 0 //セット数カウント用
         private var mode: Int = -1  //-1のときはインターバル
 
         override fun run() {
@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 else{
                     //セット数を表示
-                    setCountText!!.setText(dateFormat.format(setCount))
+                    setCountText!!.setText(toStringSetCount(setCount))
                     //タイマーをセット
                     timer = setTimer(mode)
                 }
@@ -120,6 +120,13 @@ class MainActivity : AppCompatActivity() {
                 timer = interval
             }
             return timer
+        }
+
+        //セット数の表示を調整する（キャスト）
+        private fun toStringSetCount(setCount: Int): String {
+            var str: String = "SET: "
+            str = str + Integer.toString(setCount)
+            return str
         }
 
     }
