@@ -15,6 +15,7 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     private var timerText: TextView? = null
+    private var setCountText: TextView? = null
     private val dataFormat = SimpleDateFormat("mm:ss:SSS", Locale.US)
     private val handler = Handler()
     private val audioAttributes = AudioAttributes.Builder()
@@ -31,8 +32,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         //時間の設定
-        var countTime: Long = 180000
-        var interval: Long = 60000
+        var countTime: Long = 10000
+        var interval: Long = 5000
         var set: Long = 3
 
         //Viewの設定
@@ -40,6 +41,8 @@ class MainActivity : AppCompatActivity() {
         val stopButton = findViewById<Button>(R.id.stopButton)
         timerText = findViewById<TextView>(R.id.displayTime)
         timerText!!.setText(dataFormat.format(countTime))
+        setCountText = findViewById<TextView>(R.id.countSet)
+        setCountText!!.setText(dataFormat.format(1))
 
         //効果音の設定
         //var soundOne: Int
@@ -82,11 +85,13 @@ class MainActivity : AppCompatActivity() {
                 if(mode > 0) {
                     setCount++
                 }
-                //セット数が超えたら終了
-                if(setCount > set) {
+                //カウントがセット数を超えたら終了(最終セットはインターバル無し)
+                if(setCount > set || (setCount >= set && mode < 0)) {
                     handler.removeCallbacks(this)
                 }
                 else{
+                    //セット数を表示
+                    setCountText!!.setText(dataFormat.format(setCount))
                     //タイマーをセット
                     timer = setTimer(mode)
                 }
@@ -94,11 +99,11 @@ class MainActivity : AppCompatActivity() {
             //タイマーのカウントが0以下になったら処理を終了
             if(timer > 0) {
                 timer = timer - 39
-                timerText!!.setText(dataFormat.format(timer))
                 //表示時間がマイナスにならないように調整
-                if(timer - 39 <= 0){
-                    timerText!!.setText(dataFormat.format(0))
+                if(timer <= 0){
+                    timer = 0
                 }
+                timerText!!.setText(dataFormat.format(timer))
                 //handlerが重複して処理を呼ばないようにキャンセル
                 handler.removeCallbacks(this)
                 handler.postDelayed(this, 39)
