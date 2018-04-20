@@ -50,6 +50,9 @@ class MainActivity : AppCompatActivity() {
     internal inner class CountDown(countTime: Long, interval: Long, setCount: Long) : Runnable {
         private var mode: Int = 1  //-1のときはインターバル
         var timer: Long = countTime
+        var interval: Long = interval
+        val set: Long = setCount
+        var setCount: Long = 0
         override fun run() {
             //タイマーのカウントが0以下になったら処理を終了
             if(timer > 0) {
