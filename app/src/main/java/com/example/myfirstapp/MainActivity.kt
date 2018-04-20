@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
 
     private var timerText: TextView? = null
     private var setCountText: TextView? = null
-    private val dataFormat = SimpleDateFormat("mm:ss:SSS", Locale.US)
+    private val dateFormat = SimpleDateFormat("mm:ss:SSS", Locale.US)
     private val handler = Handler()
     private val audioAttributes = AudioAttributes.Builder()
             .setUsage(AudioAttributes.USAGE_GAME)
@@ -40,9 +40,9 @@ class MainActivity : AppCompatActivity() {
         val startButton = findViewById<Button>(R.id.startButton)
         val stopButton = findViewById<Button>(R.id.stopButton)
         timerText = findViewById<TextView>(R.id.displayTime)
-        timerText!!.setText(dataFormat.format(countTime))
+        timerText!!.setText(dateFormat.format(countTime))
         setCountText = findViewById<TextView>(R.id.countSet)
-        setCountText!!.setText(dataFormat.format(1))
+        setCountText!!.setText(dateFormat.format(1))
 
         //効果音の設定
         //var soundOne: Int
@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 else{
                     //セット数を表示
-                    setCountText!!.setText(dataFormat.format(setCount))
+                    setCountText!!.setText(dateFormat.format(setCount))
                     //タイマーをセット
                     timer = setTimer(mode)
                 }
@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity() {
                 if(timer <= 0){
                     timer = 0
                 }
-                timerText!!.setText(dataFormat.format(timer))
+                timerText!!.setText(dateFormat.format(timer))
                 //handlerが重複して処理を呼ばないようにキャンセル
                 handler.removeCallbacks(this)
                 handler.postDelayed(this, 39)
