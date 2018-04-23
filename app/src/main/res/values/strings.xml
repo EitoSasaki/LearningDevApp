@@ -2,4 +2,21 @@
     <string name="app_name">MyFirstApp</string>
     <string name="start_button">start</string>
     <string name="stop_button">stop</string>
+
+    <string name="main_time">MainTime</string>
+    <string name="interval_time">IntervalTime</string>
+    <string name="set">Set</string>
+    <string name="minute_view">m</string>
+    <string name="second_view">s</string>
+    <string name="set_button">set</string>
+    <string name="regist_button">regist</string>
+
+    <integer-array name="listMinute">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </integer-array>
+
 </resources>

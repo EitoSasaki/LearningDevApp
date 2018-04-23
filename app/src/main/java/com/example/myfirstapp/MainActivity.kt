@@ -1,5 +1,6 @@
 package com.example.myfirstapp
 
+import android.content.Intent
 import android.media.AudioAttributes
 import android.media.SoundPool
 import android.os.Bundle
@@ -9,8 +10,6 @@ import android.widget.Button
 import android.widget.TextView
 import java.text.SimpleDateFormat
 import java.util.*
-
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -43,6 +42,13 @@ class MainActivity : AppCompatActivity() {
         timerText!!.setText(dateFormat.format(countTime))
         setCountText = findViewById<TextView>(R.id.countSet)
         setCountText!!.setText("SET: 1")
+
+        //戻るボタン
+        val backButton = findViewById<Button>(R.id.backSetTime)
+        backButton.setOnClickListener {
+            val intent: Intent = Intent(this, SetTimeActivity::class.java)
+            startActivity(intent)
+        }
 
         //効果音の設定
         //var soundOne: Int
