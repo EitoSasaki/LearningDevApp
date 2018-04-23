@@ -31,9 +31,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         //時間の設定
-        var countTime: Long = 10000
-        var interval: Long = 5000
-        var set: Int = 2
+        val setTimeIntent: Intent = getIntent()
+        var countTime: Long = setTimeIntent.getLongExtra("countTime", 10000)
+        var interval: Long = setTimeIntent.getLongExtra("interval", 5000)
+        var set: Int = setTimeIntent.getIntExtra("set", 2)
 
         //Viewの設定
         val startButton = findViewById<Button>(R.id.startButton)
