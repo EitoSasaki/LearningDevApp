@@ -1,8 +1,6 @@
 package com.example.myfirstapp
 
 import android.content.Intent
-import android.media.AudioAttributes
-import android.media.SoundPool
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
@@ -12,11 +10,14 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-
+    //メンバの設定
     private var timerText: TextView? = null
     private var setCountText: TextView? = null
     private val dateFormat = SimpleDateFormat("mm:ss:SSS", Locale.US)
     private val handler = Handler()
+
+    /*
+    //効果音の設定
     private val audioAttributes = AudioAttributes.Builder()
             .setUsage(AudioAttributes.USAGE_GAME)
             .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
@@ -25,6 +26,8 @@ class MainActivity : AppCompatActivity() {
             .setAudioAttributes(audioAttributes)
             .setMaxStreams(1)
             .build()
+    var soundOne: Int = soundPool.load(this, R.raw.se_maoudamashii_system49, 1) //音源：魔王魂
+    */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,16 +47,12 @@ class MainActivity : AppCompatActivity() {
         setCountText = findViewById(R.id.countSet)
         setCountText!!.setText("SET: 1")
 
-        //戻るボタン
+        //セッティングボタン
         val backButton = findViewById<Button>(R.id.backSetTime)
         backButton.setOnClickListener {
             val intent = Intent(this, SetTimeActivity::class.java)
             startActivity(intent)
         }
-
-        //効果音の設定
-        //var soundOne: Int
-        //soundOne = soundPool.load(this, R.raw.se_maoudamashii_system49, 1) //音源：魔王魂
 
         //インスタンスを生成
         var r = CountDown(countTime, interval, set)
@@ -65,6 +64,7 @@ class MainActivity : AppCompatActivity() {
             }
             //開始
             handler.post(r)
+            //効果音を鳴らす
             //soundPool.play(soundOne, 1.0f, 1.0f, 0, 0, 1F)
         }
 

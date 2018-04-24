@@ -2,6 +2,7 @@ package com.example.myfirstapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -22,8 +23,8 @@ class SetTimeActivity : AppCompatActivity() {
         val setButton = findViewById<Button>(R.id.setButton)
 
         //配列の要素をSpinnerのドロップダウンに入れる
-        val timeAdapter = ArrayAdapter.createFromResource(this, R.array.listTime, android.R.layout.simple_spinner_item)
-        val setCountAdapter = ArrayAdapter.createFromResource(this, R.array.setCount, android.R.layout.simple_spinner_item)
+        val timeAdapter = ArrayAdapter.createFromResource(this, R.array.listTime, R.layout.spinner_drop_down_item)
+        val setCountAdapter = ArrayAdapter.createFromResource(this, R.array.setCount, R.layout.spinner_drop_down_item)
         timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         setCountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
@@ -42,20 +43,30 @@ class SetTimeActivity : AppCompatActivity() {
             val intervalSecond = setIntervalSecond.getSelectedItem() as String
             val set = setCount.getSelectedItem() as String
 
-            //入力値を整理するためのインスタンスを生成
-            val putTime = putTime(countTimeMinute, countTimeSecond, intervalMinute, intervalSecond, set)
+            //入力制限
+            if(countTimeMinute == "0" && countTimeSecond == "0") {
+                AlertDialog.Builder(this)
+                        .setTitle("ERROR")
+                        .setMessage("'RunTime' has not been input!")
+                        .setPositiveButton("OK", null)
+                        .show()
+            }
+            else {
+                //入力値を整理するためのインスタンスを生成
+                val putTime = PutTime(countTimeMinute, countTimeSecond, intervalMinute, intervalSecond, set)
 
-            //セットする時間などの情報をMainActivityに渡す
-            val intent: Intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("countTime", putTime.countTime)
-            intent.putExtra("interval", putTime.interval)
-            intent.putExtra("set", putTime.set)
-            startActivity(intent)
+                //セットする時間などの情報をMainActivityに渡す
+                val intent: Intent = Intent(this, MainActivity::class.java)
+                intent.putExtra("countTime", putTime.countTime)
+                intent.putExtra("interval", putTime.interval)
+                intent.putExtra("set", putTime.set)
+                startActivity(intent)
+            }
         }
 
     }
 
-    internal inner class putTime(cntTimeMinute: String, cntTimeSecond: String, intervalMinute: String, intervalSecond: String, setCount: String) {
+    internal inner class PutTime(cntTimeMinute: String, cntTimeSecond: String, intervalMinute: String, intervalSecond: String, setCount: String) {
 
         //MainActivityに渡すメンバを設定
         var countTime: Long = 0
