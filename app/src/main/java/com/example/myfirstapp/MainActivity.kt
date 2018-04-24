@@ -30,24 +30,24 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //時間の設定
+        //タイマーの設定
         val setTimeIntent: Intent = getIntent()
         var countTime: Long = setTimeIntent.getLongExtra("countTime", 10000)
         var interval: Long = setTimeIntent.getLongExtra("interval", 5000)
-        var set: Int = setTimeIntent.getIntExtra("set", 2)
+        var set: Int = setTimeIntent.getIntExtra("set", 3)
 
         //Viewの設定
         val startButton = findViewById<Button>(R.id.startButton)
         val stopButton = findViewById<Button>(R.id.stopButton)
-        timerText = findViewById<TextView>(R.id.displayTime)
+        timerText = findViewById(R.id.displayTime)
         timerText!!.setText(dateFormat.format(countTime))
-        setCountText = findViewById<TextView>(R.id.countSet)
+        setCountText = findViewById(R.id.countSet)
         setCountText!!.setText("SET: 1")
 
         //戻るボタン
         val backButton = findViewById<Button>(R.id.backSetTime)
         backButton.setOnClickListener {
-            val intent: Intent = Intent(this, SetTimeActivity::class.java)
+            val intent = Intent(this, SetTimeActivity::class.java)
             startActivity(intent)
         }
 
@@ -86,26 +86,11 @@ class MainActivity : AppCompatActivity() {
         override fun run() {
             //タイマーの更新
             if(timer <= 0) {
-                //モードの変更
-                mode = mode * -1
-                //セットはインターバルが終了したらインクリメント
-                if(mode > 0) {
-                    setCount++
-                }
-                //カウントがセット数を超えたら終了(最終セットはインターバル無し)
-                if(setCount > set || (setCount >= set && mode < 0)) {
-                    handler.removeCallbacks(this)
-                }
-                else{
-                    //セット数を表示
-                    setCountText!!.setText(toStringSetCount(setCount))
-                    //タイマーをセット
-                    timer = setTimer(mode)
-                }
+                updateTimer()
             }
             //タイマーのカウントが0以下になったら処理を終了
             if(timer > 0) {
-                timer = timer - 39
+                timer = timer - 31
                 //表示時間がマイナスにならないように調整
                 if(timer <= 0){
                     timer = 0
@@ -113,12 +98,35 @@ class MainActivity : AppCompatActivity() {
                 timerText!!.setText(dateFormat.format(timer))
                 //handlerが重複して処理を呼ばないようにキャンセル
                 handler.removeCallbacks(this)
-                handler.postDelayed(this, 39)
+                handler.postDelayed(this, 31)
+            }
+        }
+
+        //タイマーの情報を更新する
+        private fun updateTimer(){
+            //モードの変更(intervalが０の時はmodeを１で固定)
+            //初セットは必ず通るようにする
+            if(interval > 0 || setCount == 0){
+                mode = mode * -1
+            }
+            //セットはインターバルが終了したらインクリメント
+            if(mode > 0) {
+                setCount++
+            }
+            //カウントがセット数を超えたら終了(最終セットはインターバル無し)
+            if(setCount > set || (setCount >= set && mode < 0)) {
+                handler.removeCallbacks(this)
+            }
+            else{
+                //セット数を表示
+                setCountText!!.setText(toStringSetCount())
+                //タイマーをセット
+                timer = setTimer()
             }
         }
 
         //モードでセットする時間を切り替える
-        private fun setTimer(mode: Int): Long {
+        private fun setTimer(): Long {
             var timer: Long = 0
             if(mode > 0){
                 timer = countTime
@@ -130,7 +138,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         //セット数の表示を調整する（キャスト）
-        private fun toStringSetCount(setCount: Int): String {
+        private fun toStringSetCount(): String {
             var str: String = "SET: "
             str = str + Integer.toString(setCount)
             return str

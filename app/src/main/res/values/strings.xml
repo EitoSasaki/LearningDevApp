@@ -3,7 +3,7 @@
     <string name="start_button">start</string>
     <string name="stop_button">stop</string>
 
-    <string name="main_time">MainTime</string>
+    <string name="main_time">RunTime</string>
     <string name="interval_time">IntervalTime</string>
     <string name="set">Set</string>
     <string name="minute_view">m</string>
